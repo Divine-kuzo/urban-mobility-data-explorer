@@ -7,79 +7,54 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header -->
     <header>
         <h1>NYC Taxi Mobility Dashboard</h1>
     </header>
 
-    <!-- Sidebar Filters -->
-    <aside>
-        <h2>Filters</h2>
-        <label for="time-range">Time Range:</label>
-        <input type="date" id="start-date"> to <input type="date" id="end-date">
+    <div class="container">
+        <aside>
+            <h2>Filters</h2>
+            <label for="time-range">Time Range:</label>
+            <input type="date" id="start-date"> to <input type="date" id="end-date">
+            <label for="distance-range">Distance (km):</label>
+            <input type="number" id="min-distance" placeholder="Min">
+            <input type="number" id="max-distance" placeholder="Max">
+            <label for="fare-range">Fare ($):</label>
+            <input type="number" id="min-fare" placeholder="Min">
+            <input type="number" id="max-fare" placeholder="Max">
+            <button id="apply-filters">Apply Filters</button>
+        </aside>
 
-        <label for="distance-range">Distance (km):</label>
-        <input type="number" id="min-distance" placeholder="Min">
-        <input type="number" id="max-distance" placeholder="Max">
+        <main>
+            <section id="charts">
+                <h2>Trip Insights</h2>
+                <div class="chart-container"><canvas id="tripsPerHourChart"></canvas></div>
+                <div class="chart-container"><canvas id="fareVsDistanceChart"></canvas></div>
+                <div class="chart-container"><canvas id="paymentTypeChart"></canvas></div>
+            </section>
 
-        <label for="fare-range">Fare ($):</label>
-        <input type="number" id="min-fare" placeholder="Min">
-        <input type="number" id="max-fare" placeholder="Max">
+            <section id="insights"></section>
 
-        <button id="apply-filters">Apply Filters</button>
-    </aside>
+            <section id="data-table">
+                <h2>Trip Data</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pickup Time</th>
+                            <th>Dropoff Time</th>
+                            <th>Distance (km)</th>
+                            <th>Fare ($)</th>
+                            <th>Passenger Count</th>
+                            <th>Payment Type</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </main>
+    </div>
 
-    <!-- Main Dashboard -->
-    <main>
-        <section id="charts">
-            <h2>Trip Insights</h2>
-            <div class="chart-container">
-                <canvas id="tripsPerHourChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="fareVsDistanceChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="paymentTypeChart"></canvas>
-            </div>
-        </section>
-
-        <section id="data-table">
-            <h2>Trip Data</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Pickup Time</th>
-                        <th>Dropoff Time</th>
-                        <th>Distance (km)</th>
-                        <th>Fare ($)</th>
-                        <th>Passenger Count</th>
-                        <th>Payment Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Placeholder rows -->
-                    <tr>
-                        <td>2025-09-01 08:00</td>
-                        <td>2025-09-01 08:15</td>
-                        <td>5.2</td>
-                        <td>12.50</td>
-                        <td>1</td>
-                        <td>Credit Card</td>
-                    </tr>
-                    <tr>
-                        <td>2025-09-01 09:00</td>
-                        <td>2025-09-01 09:20</td>
-                        <td>8.0</td>
-                        <td>18.00</td>
-                        <td>2</td>
-                        <td>Cash</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
