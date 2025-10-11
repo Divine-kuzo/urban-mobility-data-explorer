@@ -1,96 +1,129 @@
-/* Basic reset */
-* {
+/* ===============================
+   General Page Styling
+================================= */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* nicer font from old CSS */
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* keeps clean light background */
 }
 
-/* Layout */
-body {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    grid-template-rows: 60px 1fr;
-    grid-template-areas:
-        "header header"
-        "sidebar main";
-    height: 100vh;
-}
-
-/* Header */
+/* ===============================
+   Header Styling
+================================= */
 header {
-    grid-area: header;
-    background-color: #1e3d59;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: #1e3d59; /* from Day 3 */
+    color: #ffffff;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 26px; /* slightly bigger for better visibility */
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* subtle shadow from old CSS */
 }
 
-/* Sidebar */
-aside {
-    grid-area: sidebar;
-    background-color: #f5f5f5;
+/* ===============================
+   Layout: Sidebar + Main
+================================= */
+.container {
+    display: grid;
+    grid-template-columns: 250px 1fr; /* Sidebar + Main */
+    gap: 20px;
     padding: 20px;
-    border-right: 1px solid #ccc;
 }
 
-aside h2 {
-    margin-bottom: 10px;
+/* ===============================
+   Sidebar Styling
+================================= */
+aside {
+    background-color: #ffffff;
+    padding: 20px; /* slightly more padding from old CSS */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    height: fit-content;
 }
 
-aside label {
-    display: block;
-    margin-top: 10px;
+aside h3 {
+    margin-top: 0;
+    margin-bottom: 15px; /* a bit more spacing */
+    color: #1e3d59; /* match header theme */
 }
 
-aside input {
+aside input, aside button {
     width: 100%;
-    margin-top: 5px;
-    padding: 5px;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
 }
 
 aside button {
-    margin-top: 15px;
-    padding: 10px;
-    width: 100%;
     background-color: #1e3d59;
-    color: white;
+    color: #fff;
     border: none;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-/* Main Dashboard */
+aside button:hover {
+    background-color: #16324a;
+}
+
+/* ===============================
+   Main Content Styling
+================================= */
 main {
-    grid-area: main;
-    padding: 20px;
-    overflow-y: auto;
+    background-color: #ffffff;
+    padding: 25px; /* slightly bigger padding */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-section h2 {
-    margin-bottom: 10px;
-}
-
+/* Chart Container */
 .chart-container {
+    width: 100%;
     margin-bottom: 30px;
-    background-color: #e8e8e8;
-    padding: 15px;
-    border-radius: 5px;
 }
 
-/* Table */
+.chart-container canvas {
+    width: 100% !important;
+    height: 300px !important;
+}
+
+/* ===============================
+   Table Styling
+================================= */
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
-table th, table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-}
-
-table th {
+thead {
     background-color: #1e3d59;
-    color: white;
+    color: #fff;
+}
+
+th, td {
+    padding: 10px; /* slightly bigger padding */
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* ===============================
+   Responsive Adjustments
+================================= */
+@media (max-width: 800px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    aside {
+        margin-bottom: 20px;
+    }
 }
