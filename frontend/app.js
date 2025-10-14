@@ -1,36 +1,6 @@
- // =======================
-// Dummy Data (simulate API response)
-// =======================
-let tripsData = [
-    {
-        pickup_datetime: "2025-09-01 08:00",
-        dropoff_datetime: "2025-09-01 08:15",
-        trip_distance: 5.2,
-        fare_amount: 12.50,
-        passenger_count: 1,
-        payment_type: "Credit Card"
-    },
-    {
-        pickup_datetime: "2025-09-01 09:00",
-        dropoff_datetime: "2025-09-01 09:20",
-        trip_distance: 8.0,
-        fare_amount: 18.00,
-        passenger_count: 2,
-        payment_type: "Cash"
-    },
-    {
-        pickup_datetime: "2025-09-01 10:00",
-        dropoff_datetime: "2025-09-01 10:25",
-        trip_distance: 10.0,
-        fare_amount: 22.00,
-        passenger_count: 1,
-        payment_type: "Credit Card"
-    }
-];
-
-// =======================
+// ===========================
 // DOM Elements
-// =======================
+// ===========================
 const startDateInput = document.getElementById("start-date");
 const endDateInput = document.getElementById("end-date");
 const minDistanceInput = document.getElementById("min-distance");
@@ -39,14 +9,25 @@ const minFareInput = document.getElementById("min-fare");
 const maxFareInput = document.getElementById("max-fare");
 const applyButton = document.getElementById("apply-filters");
 
-// =======================
+// ===========================
 // Chart.js Placeholders
-// =======================
+// ===========================
 let tripsPerHourChart, fareVsDistanceChart, paymentTypeChart;
+let tripsData = []; // Will store data from API
 
-// -----------------------
-// Initialize all charts
-// -----------------------
+// ===========================
+// Helper Functions
+// ===========================
+async function fetchData(endpoint, params = '') {
+    try {
+        const res = await fetch(`${endpoint}${params}`);
+        return await res.json();
+    } catch (err) {
+        console.error('Error fetching data:', err);
+        return [];
+    }
+}
+
 function initCharts(data) {
     if(tripsPerHourChart) tripsPerHourChart.destroy();
     if(fareVsDistanceChart) fareVsDistanceChart.destroy();
@@ -63,23 +44,12 @@ function initCharts(data) {
         type: 'bar',
         data: {
             labels: Object.keys(hourCounts),
-            datasets: [{
-                label: "Trips per Hour",
-                data: Object.values(hourCounts),
-                backgroundColor: "#1e3d59"
-            }]
+            datasets: [{ label: "Trips per Hour", data: Object.values(hourCounts), backgroundColor: "#1e3d59" }]
         },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: true },
-                tooltip: { enabled: true }
-            },
-            scales: { y: { beginAtZero: true } }
-        }
+        options: { responsive: true, plugins: { legend: { display: true }, tooltip: { enabled: true } }, scales: { y: { beginAtZero: true } } }
     });
 
-    // Fare vs Distance
+    // Fare vs Distance (scatter)
     const ctx2 = document.getElementById("fareVsDistanceChart").getContext("2d");
     fareVsDistanceChart = new Chart(ctx2, {
         type: 'scatter',
@@ -92,59 +62,41 @@ function initCharts(data) {
         },
         options: {
             responsive: true,
-            scales: {
-                x: { title: { display: true, text: "Distance (km)" } },
-                y: { title: { display: true, text: "Fare ($)" } }
-            }
+            scales: { x: { title: { display: true, text: "Distance (km)" } }, y: { title: { display: true, text: "Fare ($)" } } }
         }
     });
 
-    // Payment Type Distribution
+    // Payment Type Pie Chart
     const paymentCounts = {};
-    data.forEach(trip => {
-        paymentCounts[trip.payment_type] = (paymentCounts[trip.payment_type] || 0) + 1;
-    });
+    data.forEach(trip => paymentCounts[trip.payment_type] = (paymentCounts[trip.payment_type] || 0) + 1);
     const ctx3 = document.getElementById("paymentTypeChart").getContext("2d");
     paymentTypeChart = new Chart(ctx3, {
         type: 'pie',
-        data: {
-            labels: Object.keys(paymentCounts),
-            datasets: [{
-                label: "Payment Type",
-                data: Object.values(paymentCounts),
-                backgroundColor: ["#ff6e40", "#1e3d59", "#f5a623"]
-            }]
-        },
+        data: { labels: Object.keys(paymentCounts), datasets: [{ data: Object.values(paymentCounts), backgroundColor: ["#ff6e40","#1e3d59","#f5a623"] }] },
         options: { responsive: true }
     });
 }
 
-// -----------------------
-// Populate Table
-// -----------------------
 function populateTable(data) {
     const tbody = document.querySelector("#data-table tbody");
-    tbody.innerHTML = ""; // Clear previous rows
+    tbody.innerHTML = "";
     data.forEach(trip => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${trip.pickup_datetime}</td>
-            <td>${trip.dropoff_datetime}</td>
-            <td>${trip.trip_distance}</td>
-            <td>${trip.fare_amount}</td>
-            <td>${trip.passenger_count}</td>
-            <td>${trip.payment_type}</td>
+        tbody.innerHTML += `
+            <tr>
+                <td>${trip.pickup_datetime}</td>
+                <td>${trip.dropoff_datetime}</td>
+                <td>${trip.trip_distance}</td>
+                <td>${trip.fare_amount}</td>
+                <td>${trip.passenger_count}</td>
+                <td>${trip.payment_type}</td>
+            </tr>
         `;
-        tbody.appendChild(row);
     });
 }
 
-// -----------------------
-// Generate Trip Insights
-// -----------------------
 function generateInsights(data) {
     const insightsDiv = document.getElementById("insights");
-    insightsDiv.innerHTML = ""; // clear previous insights
+    insightsDiv.innerHTML = "";
 
     if(data.length === 0){
         insightsDiv.innerHTML = "<p>No data available for insights.</p>";
@@ -152,18 +104,18 @@ function generateInsights(data) {
     }
 
     const totalTrips = data.length;
-    const avgDistance = (data.reduce((sum, t) => sum + t.trip_distance, 0) / totalTrips).toFixed(2);
-    const avgFare = (data.reduce((sum, t) => sum + t.fare_amount, 0) / totalTrips).toFixed(2);
+    const avgDistance = (data.reduce((sum, t) => sum + t.trip_distance, 0)/totalTrips).toFixed(2);
+    const avgFare = (data.reduce((sum, t) => sum + t.fare_amount, 0)/totalTrips).toFixed(2);
     const busiestHour = (() => {
         const hours = data.map(trip => new Date(trip.pickup_datetime).getHours());
         const counts = {};
         hours.forEach(h => counts[h] = (counts[h] || 0) + 1);
         return Object.keys(counts).reduce((a,b) => counts[a] > counts[b] ? a : b);
     })();
-    const longestTrip = data.reduce((max, t) => t.trip_distance > max ? t.trip_distance : max, 0);
-    const shortestTrip = data.reduce((min, t) => t.trip_distance < min ? t.trip_distance : min, Infinity);
-    const highestFare = data.reduce((max, t) => t.fare_amount > max ? t.fare_amount : max, 0);
-    const avgPassengers = (data.reduce((sum, t) => sum + t.passenger_count, 0)/totalTrips).toFixed(2);
+    const longestTrip = data.reduce((max,t) => t.trip_distance > max ? t.trip_distance : max, 0);
+    const shortestTrip = data.reduce((min,t) => t.trip_distance < min ? t.trip_distance : min, Infinity);
+    const highestFare = data.reduce((max,t) => t.fare_amount > max ? t.fare_amount : max, 0);
+    const avgPassengers = (data.reduce((sum,t)=>sum+t.passenger_count,0)/totalTrips).toFixed(2);
 
     const paymentCounts = {};
     data.forEach(t => paymentCounts[t.payment_type] = (paymentCounts[t.payment_type] || 0) + 1);
@@ -183,56 +135,36 @@ function generateInsights(data) {
     `;
 }
 
-// -----------------------
+// ===========================
 // Filter Function
-// -----------------------
-function applyFilters() {
-    let filtered = tripsData;
+// ===========================
+async function applyFilters() {
+    const params = new URLSearchParams();
+    if(startDateInput.value) params.append('start_date', startDateInput.value);
+    if(endDateInput.value) params.append('end_date', endDateInput.value);
+    if(minDistanceInput.value) params.append('min_distance', minDistanceInput.value);
+    if(maxDistanceInput.value) params.append('max_distance', maxDistanceInput.value);
+    if(minFareInput.value) params.append('min_fare', minFareInput.value);
+    if(maxFareInput.value) params.append('max_fare', maxFareInput.value);
 
-    // Date filter
-    if(startDateInput.value) filtered = filtered.filter(trip => new Date(trip.pickup_datetime) >= new Date(startDateInput.value));
-    if(endDateInput.value) filtered = filtered.filter(trip => new Date(trip.pickup_datetime) <= new Date(endDateInput.value));
+    // Fetch filtered trips from backend
+    tripsData = await fetchData('/filter?' + params.toString());
 
-    // Distance filter
-    if(minDistanceInput.value) filtered = filtered.filter(trip => trip.trip_distance >= parseFloat(minDistanceInput.value));
-    if(maxDistanceInput.value) filtered = filtered.filter(trip => trip.trip_distance <= parseFloat(maxDistanceInput.value));
-
-    // Fare filter
-    if(minFareInput.value) filtered = filtered.filter(trip => trip.fare_amount >= parseFloat(minFareInput.value));
-    if(maxFareInput.value) filtered = filtered.filter(trip => trip.fare_amount <= parseFloat(maxFareInput.value));
-
-    // Update charts, table, and insights
-    initCharts(filtered);
-    populateTable(filtered);
-    generateInsights(filtered);
+    initCharts(tripsData);
+    populateTable(tripsData);
+    generateInsights(tripsData);
 }
 
-// -----------------------
+// ===========================
 // Event Listener
-// -----------------------
+// ===========================
 applyButton.addEventListener("click", applyFilters);
 
-// -----------------------
-// Placeholder for Real API Fetch (Day 4)
-// -----------------------
-function fetchTripsFromAPI() {
-    // TODO: Replace dummy data with actual API call
-    /*
-    fetch("/api/trips")
-      .then(res => res.json())
-      .then(data => {
-          tripsData = data;
-          initCharts(tripsData);
-          populateTable(tripsData);
-          generateInsights(tripsData);
-      });
-    */
-}
-
-// -----------------------
-// Initialize Page
-// -----------------------
-window.onload = function() {
+// ===========================
+// Load initial data on page load
+// ===========================
+window.onload = async function() {
+    tripsData = await fetchData('/trips');
     initCharts(tripsData);
     populateTable(tripsData);
     generateInsights(tripsData);
