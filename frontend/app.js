@@ -7,6 +7,9 @@ const minDistanceInput = document.getElementById("min-distance");
 const maxDistanceInput = document.getElementById("max-distance");
 const minFareInput = document.getElementById("min-fare");
 const maxFareInput = document.getElementById("max-fare");
+const minPassengersInput = document.getElementById("min-passengers"); // New
+const maxPassengersInput = document.getElementById("max-passengers"); // New
+const paymentTypeSelect = document.getElementById("payment-type"); // New
 const applyButton = document.getElementById("apply-filters");
 
 // ===========================
@@ -44,9 +47,21 @@ function initCharts(data) {
         type: 'bar',
         data: {
             labels: Object.keys(hourCounts),
-            datasets: [{ label: "Trips per Hour", data: Object.values(hourCounts), backgroundColor: "#1e3d59" }]
+            datasets: [{ 
+                label: "Trips per Hour", 
+                data: Object.values(hourCounts), 
+                backgroundColor: "#1e3d59" 
+            }]
         },
-        options: { responsive: true, plugins: { legend: { display: true }, tooltip: { enabled: true } }, scales: { y: { beginAtZero: true } } }
+        options: { 
+            responsive: true, 
+            plugins: { 
+                legend: { display: true }, 
+                tooltip: { enabled: true },
+                title: { display: true, text: 'Trips per Hour' }
+            },
+            scales: { y: { beginAtZero: true } } 
+        }
     });
 
     // Fare vs Distance (scatter)
@@ -62,7 +77,11 @@ function initCharts(data) {
         },
         options: {
             responsive: true,
-            scales: { x: { title: { display: true, text: "Distance (km)" } }, y: { title: { display: true, text: "Fare ($)" } } }
+            plugins: { title: { display: true, text: 'Fare vs Distance' } },
+            scales: { 
+                x: { title: { display: true, text: "Distance (km)" } }, 
+                y: { title: { display: true, text: "Fare ($)" } } 
+            }
         }
     });
 
@@ -72,8 +91,15 @@ function initCharts(data) {
     const ctx3 = document.getElementById("paymentTypeChart").getContext("2d");
     paymentTypeChart = new Chart(ctx3, {
         type: 'pie',
-        data: { labels: Object.keys(paymentCounts), datasets: [{ data: Object.values(paymentCounts), backgroundColor: ["#ff6e40","#1e3d59","#f5a623"] }] },
-        options: { responsive: true }
+        data: { 
+            labels: Object.keys(paymentCounts), 
+            datasets: [{ 
+                data: Object.values(paymentCounts), 
+                backgroundColor: ["#ff6e40","#1e3d59","#f5a623"],
+                hoverOffset: 10
+            }] 
+        },
+        options: { responsive: true, plugins: { title: { display: true, text: 'Payment Type Distribution' } } }
     });
 }
 
@@ -146,8 +172,10 @@ async function applyFilters() {
     if(maxDistanceInput.value) params.append('max_distance', maxDistanceInput.value);
     if(minFareInput.value) params.append('min_fare', minFareInput.value);
     if(maxFareInput.value) params.append('max_fare', maxFareInput.value);
+    if(minPassengersInput.value) params.append('min_passengers', minPassengersInput.value);
+    if(maxPassengersInput.value) params.append('max_passengers', maxPassengersInput.value);
+    if(paymentTypeSelect.value) params.append('payment_type', paymentTypeSelect.value);
 
-    // Fetch filtered trips from backend
     tripsData = await fetchData('/filter?' + params.toString());
 
     initCharts(tripsData);
@@ -164,7 +192,7 @@ applyButton.addEventListener("click", applyFilters);
 // Load initial data on page load
 // ===========================
 window.onload = async function() {
-    tripsData = await fetchData('/trips');
+    tripsData = await fetchData('/trips'); // Ensure your backend /trips endpoint returns all trips
     initCharts(tripsData);
     populateTable(tripsData);
     generateInsights(tripsData);
