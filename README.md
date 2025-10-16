@@ -39,9 +39,7 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
   - `/top_dropoffs` – Returns top 10 dropoff locations with average fare and distance.
   - Additional endpoints for highest passengers, shortest trip durations, and vendor information.
 - SQLite database schema:
-  - **passengers**: `passenger_id`, `passenger_count`
   - **locations**: `location_id`, `latitude`, `longitude`
-  - **payments**: `payment_id`, `payment_type`, `fare_amount`, `trip_id`
   - **trips**: `trip_id`, `pickup_datetime`, `dropoff_datetime`, `trip_duration_s`, `trip_distance_km`, `trip_speed_kmph`, `pickup_location_id`, `dropoff_location_id`, `passenger_id`, `payment_id`, `fare_amount`
 - Indexes for optimized queries:
   - `idx_trips_pickup_datetime`
@@ -95,26 +93,16 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 2. **Filters** can be applied to refine trips by date, distance, fare, passenger count, and payment type.
 3. **Charts** are dynamically generated using Chart.js based on filtered data.
 4. **Insights** are calculated and displayed in real-time.
-5. **Database** stores cleaned and structured trip data with proper relationships between passengers, trips, locations, and payments.
+5. **Database** stores cleaned and structured trip data with proper relationships between trips and locations
 
 ---
 
 ## Database Schema
 
-### passengers
-- `passenger_id` (INTEGER, PRIMARY KEY)
-- `passenger_count` (INTEGER, NOT NULL)
-
 ### locations
 - `location_id` (INTEGER, PRIMARY KEY)
 - `latitude` (REAL, NOT NULL)
 - `longitude` (REAL, NOT NULL)
-
-### payments
-- `payment_id` (INTEGER, PRIMARY KEY)
-- `payment_type` (TEXT)
-- `fare_amount` (REAL)
-- `trip_id` (INTEGER, FOREIGN KEY → trips.trip_id)
 
 ### trips
 - `trip_id` (INTEGER, PRIMARY KEY)
@@ -125,9 +113,7 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 - `trip_speed_kmph` (REAL)
 - `pickup_location_id` (INTEGER, FOREIGN KEY → locations.location_id)
 - `dropoff_location_id` (INTEGER, FOREIGN KEY → locations.location_id)
-- `passenger_id` (INTEGER, FOREIGN KEY → passengers.passenger_id)
-- `payment_id` (INTEGER, FOREIGN KEY → payments.payment_id)
-- `fare_amount` (REAL)
+- `payment_count` (INTEGER)
 
 ---
 
