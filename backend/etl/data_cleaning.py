@@ -59,7 +59,7 @@ def process_chunk(chunk, seen_signatures):
     cleaned = []
     excluded = []
 
-    # iterate rows (we keep using row access to mirror your existing style)
+    # iterate rows (we keep using row access to mirror existing style)
     for _, row in chunk.iterrows():
         reasons = []
 
