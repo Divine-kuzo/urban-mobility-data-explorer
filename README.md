@@ -143,6 +143,6 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 - SQLite database ensures data integrity through relational constraints and indexes.
 
 ---
-## Documentation / Report
+### Documentation / Report
 ---
-## Video Demonstration
+### Video Demonstration
