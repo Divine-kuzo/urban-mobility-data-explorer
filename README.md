@@ -137,6 +137,68 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
   - Trip datetime, distance, duration, and speed
 
 ---
+## Installation steps
+- Clone the repository:
+  - git clone https://github.com/NathanaellaHirwa/urban-mobility-data-explorer.git
+  - cd urban-mobility-data-explorer
+
+- Install Python (3.10 or higher) from python.org
+- Install required Python packages:
+  - pip install -r requirements.txt
+- Ensure database file is in place (database/dump.db) or run the data insertion script to populate it.
+- Make sure Chart.js is available via CDN in the frontend HTML.
+
+---
+## Environment setup
+- set Up Python Environment
+  - Create a virtual environment (recommended):
+     python -m venv venv
+- Activate the virtual environment:
+# Linux/macOS
+source venv/bin/activate
+# Windows
+venv\Scripts\activate
+  - Install Python dependencies:
+     pip install -r requirements.txt
+- Prepare the Database
+  - Ensure SQLite database file exists at database/dump.db.
+  - Populate demo data (optional but recommended):
+     python database/insert_data.py
+- Set Up Frontend
+  - Frontend files are in the project root (index.html, style.css, app.js).
+  - To serve the frontend locally, run:
+     python -m http.server 8000
+  - Open your browser at http://localhost:8000.
+- No Additional Environment Variables Required
+All configurations and paths are already set relative to the project structure.
+
+---
+### Launching the Application
+## 1. Launch Backend (Flask API)
+- Ensure your virtual environment is activated.
+- Navigate to the backend folder (if applicable).
+- Run the Flask app:
+# For main backend app
+  python app.py
+- By default, the backend runs on:
+  http://127.0.0.1:5000 (or the port specified in the code).
+- API Endpoints available:
+  / → Home route, basic status check
+  /top_dropoffs → Top dropoff locations
+  Additional endpoints from main.py as defined
+## 2. Launch Frontend
+- Ensure the backend is running.
+- Serve the frontend using a local server:
+  python -m http.server 8000
+- Open your browser at:
+  http://localhost:8000
+- The frontend connects to the backend to fetch trip data and display charts, tables, and insights.
+## 3. Verify Application
+- Open the frontend URL in a browser.
+- Apply filters using the sidebar to see live updates of charts, tables, and analytics.
+- Confirm backend API returns JSON data without errors.
+
+---
 
 ## Notes
 - Frontend uses Chart.js for dynamic charting.
