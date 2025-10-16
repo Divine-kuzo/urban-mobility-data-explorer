@@ -12,13 +12,11 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 ### Frontend
 - Responsive layout with a sidebar for filters and a main content area for charts and tables.
 - Interactive charts including:
-  - Trips per hour (Bar chart)
-- Dynamic insights including:
-  - Total trips
-  - Average distance and fare
-  - Busiest hour
-  - Longest and shortest trip
-  - Average passengers
+  - Trip duration by  hour, Busiest hours (Bar chart)
+  - passenger count per trip(pie chart)
+  - Vendor performance
+  - top ten longest trips 
+  
 - Filter options for:
   - Date range
   - Distance range
@@ -28,9 +26,30 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 ### Backend
 - Flask-based REST API serving trip data from SQLite database.
 - Endpoints include:
-  - `/` – Home route with available routes listed.
-  - `/top_dropoffs` – Returns top 10 dropoff locations with average fare and distance.
-  - Additional endpoints for highest passengers, shortest trip durations, and vendor information.
+*/trips/duration-by-hour*
+Returns the average trip duration grouped by hour.
+Useful for visualizing when trip durations peak (e.g., morning or evening rush hours).
+
+*/trips/passenger-distribution*
+Returns data about number of passengers per trip.
+Ideal for a bar or pie chart showing how most trips have 1–2 passengers.
+
+/trips/pickup-locations
+Returns pickup coordinates (latitude and longitude).
+Used to create a heatmap showing the busiest pickup areas (e.g., Manhattan hotspots).
+
+/trips/vendor-summary
+Summarizes trips and revenue by vendor.
+Perfect for a comparison chart to see which vendor has more trips or revenue.
+
+/trips/top-longest-trips
+Returns the Top 10 longest trips, computed using your custom algorithm (find_top_10_longest).
+This satisfies the manual algorithm requirement — highlight this in your video.
+
+/trips/search
+allows users to filter trips by distance and time range using query parameters (min_distance, max_distance, start_time, end_time).
+
+Useful for interactive filtering in the frontend dashboard.
 - SQLite database schema:
   - **locations**: `location_id`, `latitude`, `longitude`
   - **trips**: `trip_id`, `pickup_datetime`, `dropoff_datetime`, `trip_duration_s`, `trip_distance_km`, `trip_speed_kmph`, `pickup_location_id`, `dropoff_location_id`, `passenger_id`, `payment_id`, `fare_amount`
@@ -105,16 +124,6 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 - `trip_speed_kmph` (REAL)
 - `pickup_location_id` (INTEGER, FOREIGN KEY → locations.location_id)
 - `dropoff_location_id` (INTEGER, FOREIGN KEY → locations.location_id)
-
----
-
-## Endpoints
-
-- **Home**: `/` – Returns available routes.
-- **Top dropoff locations**: `/top_dropoffs` – Top 10 dropoff locations.
-- **Highest passengers**: `/highest_passengers` – Returns rides with highest passenger counts.
-- **Shortest trip durations**: `/shortest_trip_duration` – Returns shortest trips.
-- **Vendor info**: `/vendor` – Returns vendor information.
 
 ---
 
@@ -206,8 +215,7 @@ All configurations and paths are already set relative to the project structure.
 
 ---
 ### Documentation / Report 
-
-the report can be found in the docs directory 
 ---
 ### Video Demonstration
-This video demonstrates our NYC Taxi Mobility Dashboard, where we walk through the functionality of the application, including how to filter trips, interpret the interactive charts, and explore key insights derived from the taxi trip data. It provides an overview of how the frontend, backend, and database work together to deliver data analysis experience. link: https://youtu.be/dUS9UysvnBc 
+This video demonstrates our NYC Taxi Mobility Dashboard, where we walk through the functionality of the application, including how to filter trips, interpret the interactive charts, and explore key insights derived from the taxi trip data. It provides an overview of how the frontend, backend, and database work together to deliver data analysis experience. 
+link: https://youtu.be/dUS9UysvnBc 
