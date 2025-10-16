@@ -1,4 +1,4 @@
- Taxi Mobility Dashboard
+### NYC Taxi Mobility Dashboard
 
 ## Overview
 The **NYC Taxi Mobility Dashboard** is a web-based application designed to visualize and analyze New York City taxi trip data. The dashboard allows users to explore trip patterns, fares, distances, passenger counts, and payment types through interactive charts, insights, and tabular data.
@@ -70,6 +70,7 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 ---
 
 ## File Structure
+```
 .
 ├── app.js # Frontend JavaScript for charts, table, and filters
 ├── index.html # Frontend HTML layout
@@ -86,6 +87,7 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 │ ├── cleaned-trips.csv # Cleaned trip dataset
 │ └── excluded-trips.csv # Excluded/invalid records
 └── README.md 
+```
 ---
 
 ## How It Works
