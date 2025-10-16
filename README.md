@@ -52,7 +52,7 @@ allows users to filter trips by distance and time range using query parameters (
 Useful for interactive filtering in the frontend dashboard.
 - SQLite database schema:
   - **locations**: `location_id`, `latitude`, `longitude`
-  - **trips**: `trip_id`, `pickup_datetime`, `dropoff_datetime`, `trip_duration_s`, `trip_distance_km`, `trip_speed_kmph`, `pickup_location_id`, `dropoff_location_id`, `passenger_id`, `payment_id`, `fare_amount`
+  - **trips**: `trip_id`, `pickup_datetime`, `dropoff_datetime`, `trip_duration_s`, `trip_distance_km`, `trip_speed_kmph`, `pickup_location_id`, `dropoff_location_id`, `passenger_id`
 - Indexes for optimized queries:
   - `idx_trips_pickup_datetime`
   - `idx_trips_dropoff_datetime`
