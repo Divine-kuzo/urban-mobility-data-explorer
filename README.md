@@ -164,7 +164,7 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 ---
 
 ## Notes
-- Backend is implemented in Flask, running on `127.0.0.1` ports 5000 or 8000 depending on the app.
+- Backend is implemented in Flask, running on `127.0.0.1` ports 5000.
 - Frontend uses Chart.js for dynamic charting.
 - SQLite database ensures data integrity through relational constraints and indexes.
 
