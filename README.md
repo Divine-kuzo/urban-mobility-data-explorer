@@ -146,3 +146,4 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 ### Documentation / Report
 ---
 ### Video Demonstration
+This video demonstrates our NYC Taxi Mobility Dashboard, where we walk through the functionality of the application, including how to filter trips, interpret the interactive charts, and explore key insights derived from the taxi trip data. It provides an overview of how the frontend, backend, and database work together to deliver data analysis experience.
