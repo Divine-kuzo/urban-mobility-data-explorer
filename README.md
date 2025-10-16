@@ -1,7 +1,7 @@
 ### NYC Taxi Mobility Dashboard
 
 ## Overview
-The **NYC Taxi Mobility Dashboard** is a web-based application designed to visualize and analyze New York City taxi trip data. The dashboard allows users to explore trip patterns, fares, distances, passenger counts, and payment types through interactive charts, insights, and tabular data.
+The **NYC Taxi Mobility Dashboard** is a web-based application designed to visualize and analyze New York City taxi trip data. The dashboard allows users to explore trip patterns, distances, and passenger counts, through interactive charts, insights, and tabular data.
 
 The application integrates a **frontend** built with HTML, CSS, and JavaScript (Chart.js) and a **backend** powered by Flask and SQLite. The backend provides endpoints to fetch trip data, apply filters, and calculate aggregated statistics.
 
@@ -13,29 +13,22 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 - Responsive layout with a sidebar for filters and a main content area for charts and tables.
 - Interactive charts including:
   - Trips per hour (Bar chart)
-  - Fare vs Distance (Scatter chart)
-  - Payment Type Distribution (Pie chart)
 - Dynamic insights including:
   - Total trips
   - Average distance and fare
   - Busiest hour
   - Longest and shortest trip
-  - Highest fare
   - Average passengers
-  - Payment distribution percentages
 - Filter options for:
   - Date range
   - Distance range
-  - Fare range
   - Passenger count
-  - Payment type
 - Trip data table with sortable columns.
 
 ### Backend
 - Flask-based REST API serving trip data from SQLite database.
 - Endpoints include:
   - `/` – Home route with available routes listed.
-  - `/avg_fare_by_hour` – Returns average fare per hour with trip counts.
   - `/top_dropoffs` – Returns top 10 dropoff locations with average fare and distance.
   - Additional endpoints for highest passengers, shortest trip durations, and vendor information.
 - SQLite database schema:
@@ -45,8 +38,7 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
   - `idx_trips_pickup_datetime`
   - `idx_trips_dropoff_datetime`
   - `idx_trips_distance`
-  - `idx_payments_trip`
-
+    
 ### Data Management
 - Data cleaning and preprocessing with Python and Pandas:
   - Timestamp validation
@@ -90,7 +82,7 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 
 ## How It Works
 1. **Frontend** fetches trip data from backend endpoints.
-2. **Filters** can be applied to refine trips by date, distance, fare, passenger count, and payment type.
+2. **Filters** can be applied to refine trips by date, distance, and passenger count.
 3. **Charts** are dynamically generated using Chart.js based on filtered data.
 4. **Insights** are calculated and displayed in real-time.
 5. **Database** stores cleaned and structured trip data with proper relationships between trips and locations
@@ -113,15 +105,13 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 - `trip_speed_kmph` (REAL)
 - `pickup_location_id` (INTEGER, FOREIGN KEY → locations.location_id)
 - `dropoff_location_id` (INTEGER, FOREIGN KEY → locations.location_id)
-- `payment_count` (INTEGER)
 
 ---
 
 ## Endpoints
 
 - **Home**: `/` – Returns available routes.
-- **Average fare by hour**: `/avg_fare_by_hour` – Aggregated trip count and average fare per hour.
-- **Top dropoff locations**: `/top_dropoffs` – Top 10 dropoff locations sorted by average fare.
+- **Top dropoff locations**: `/top_dropoffs` – Top 10 dropoff locations.
 - **Highest passengers**: `/highest_passengers` – Returns rides with highest passenger counts.
 - **Shortest trip durations**: `/shortest_trip_duration` – Returns shortest trips.
 - **Vendor info**: `/vendor` – Returns vendor information.
@@ -144,13 +134,15 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 - Example inserted fields:
   - Passenger count
   - Pickup and dropoff locations
-  - Payment type and fare
   - Trip datetime, distance, duration, and speed
 
 ---
 
 ## Notes
-- Backend is implemented in Flask, running on `127.0.0.1` ports 5000.
 - Frontend uses Chart.js for dynamic charting.
 - SQLite database ensures data integrity through relational constraints and indexes.
 
+---
+## Documentation / Report
+---
+## Video Demonstration
