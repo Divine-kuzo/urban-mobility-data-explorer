@@ -139,7 +139,7 @@ The application integrates a **frontend** built with HTML, CSS, and JavaScript (
 ---
 ## Installation steps
 - Clone the repository:
-  - git clone https://github.com/NathanaellaHirwa/urban-mobility-data-explorer.git
+  - git clone https://github.com/Divine-kuzo/urban-mobility-data-explorer
   - cd urban-mobility-data-explorer
 
 - Install Python (3.10 or higher) from python.org
