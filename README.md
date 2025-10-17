@@ -95,6 +95,12 @@ Useful for interactive filtering in the frontend dashboard.
 │ ├── train.csv # Raw NYC taxi trip dataset
 │ ├── cleaned-trips.csv # Cleaned trip dataset
 │ └── excluded-trips.csv # Excluded/invalid records
+├── docs/
+│ ├── NYC Taxi Mobility Dashboard.pdf    <-- PDF technical report
+│ ├── screenshots/
+│ │ └── chart1.png # Trip duration by hour
+│ │ └── chart2.png # Passenger count dristribution
+│ │ └── chart3.png # Vendor perfomance
 └── README.md 
 ```
 ---
