@@ -1,227 +1,132 @@
-### NYC Taxi Mobility Dashboard
+### Urban Mobility Data Explorer (NYC Taxi)
+
+[Demo video placeholder – add link here](#)
 
 ## Overview
-The **NYC Taxi Mobility Dashboard** is a web-based application designed to visualize and analyze New York City taxi trip data. The dashboard allows users to explore trip patterns, distances, and passenger counts, through interactive charts, insights, and tabular data.
-
-The application integrates a **frontend** built with HTML, CSS, and JavaScript (Chart.js) and a **backend** powered by Flask and SQLite. The backend provides endpoints to fetch trip data, apply filters, and calculate aggregated statistics.
+The Urban Mobility Data Explorer is a web app to visualize and analyze NYC taxi trips. It combines a static frontend (HTML/CSS/JS with Chart.js) and a Flask + SQLite backend API. Users can filter trips, view charts and insights, and browse a paginated table of trips.
 
 ---
 
 ## Features
 
 ### Frontend
-- Responsive layout with a sidebar for filters and a main content area for charts and tables.
-- Interactive charts including:
-  - Trip duration by  hour, Busiest hours (Bar chart)
-  - passenger count per trip(pie chart)
-  - Vendor performance
-  - top ten longest trips 
-  
-- Filter options for:
-  - Date range
-  - Distance range
-  - Passenger count
-- Trip data table with sortable columns.
+- Interactive chart: Trips per hour (Chart.js)
+- Live card with most recent trip details
+- Filters: date and minimum distance
+- Paginated trips table
+
+Note: “Summary Visualizations” and “Key Insights” may take a few seconds to load when working with very large datasets, as the backend performs server-side aggregation/sampling.
 
 ### Backend
-- Flask-based REST API serving trip data from SQLite database.
-- Endpoints include:
-*/trips/duration-by-hour*
-Returns the average trip duration grouped by hour.
-Useful for visualizing when trip durations peak (e.g., morning or evening rush hours).
-
-*/trips/passenger-distribution*
-Returns data about number of passengers per trip.
-Ideal for a bar or pie chart showing how most trips have 1–2 passengers.
-
-/trips/pickup-locations
-Returns pickup coordinates (latitude and longitude).
-Used to create a heatmap showing the busiest pickup areas (e.g., Manhattan hotspots).
-
-/trips/vendor-summary
-Summarizes trips and revenue by vendor.
-Perfect for a comparison chart to see which vendor has more trips or revenue.
-
-/trips/top-longest-trips
-Returns the Top 10 longest trips, computed using your custom algorithm (find_top_10_longest).
-This satisfies the manual algorithm requirement — highlight this in your video.
-
-/trips/search
-allows users to filter trips by distance and time range using query parameters (min_distance, max_distance, start_time, end_time).
-
-Useful for interactive filtering in the frontend dashboard.
-- SQLite database schema:
-  - **locations**: `location_id`, `latitude`, `longitude`
-  - **trips**: `trip_id`, `pickup_datetime`, `dropoff_datetime`, `trip_duration_s`, `trip_distance_km`, `trip_speed_kmph`, `pickup_location_id`, `dropoff_location_id`, `passenger_id`
-- Indexes for optimized queries:
-  - `idx_trips_pickup_datetime`
-  - `idx_trips_dropoff_datetime`
-  - `idx_trips_distance`
-    
-### Data Management
-- Data cleaning and preprocessing with Python and Pandas:
-  - Timestamp validation
-  - Coordinate validation within NYC bounding box
-  - Haversine distance calculation
-  - Trip duration and speed computation
-  - Duplicate detection
-  - Exclusion of invalid records
-- Sample data insertion script provided to populate the database with demo trips.
+- Flask REST API backed by SQLite (`database/data.db`)
+- Fast, paginated trips endpoint with optional filters
+- Aggregated summaries and insights endpoints
 
 ---
 
-## Technologies
-- **Frontend**: HTML, CSS, JavaScript, Chart.js
-- **Backend**: Python, Flask, SQLite
-- **Data Processing**: Python, Pandas, Haversine formula
-- **Database**: SQLite with relational schema and indexing
-
----
-
-## File Structure
+## Project Structure
 ```
-.
-├── app.js # Frontend JavaScript for charts, table, and filters
-├── index.html # Frontend HTML layout
-├── style.css # Frontend CSS styling
+urban-mobility-data-explorer/
 ├── backend/
-│ ├── app.py # Flask backend application
-│ ├── main.py # Additional Flask routes
-│ ├── database/
-│ │ ├── dump.db # SQLite database file
-│ │ └── schema.sql # Database schema definitions
-│ └── data-insertion.py # Script to insert demo data
-├── data/
-│ ├── train.csv # Raw NYC taxi trip dataset
-│ ├── cleaned-trips.csv # Cleaned trip dataset
-│ └── excluded-trips.csv # Excluded/invalid records
-├── docs/
-│ ├── NYC Taxi Mobility Dashboard.pdf    <-- PDF technical report
-│ ├── screenshots/
-│ │ └── chart1.png # Trip duration by hour
-│ │ └── chart2.png # Passenger count dristribution
-│ │ └── chart3.png # Vendor perfomance
-└── README.md 
+│  ├── app.py                 # Flask API server (entry point)
+│  ├── data_processing.py     # Data utilities (optional)
+│  └── requirements.txt       # Backend Python dependencies
+├── database/
+│  ├── data.db                # SQLite database (pre-populated)
+│  └── schema.sql             # Schema (reference)
+├── frontend/
+│  ├── index.html             # UI
+│  ├── scripts.js             # Frontend logic (calls the API)
+│  └── styles.css             # Styling
+├── cleaned_data.csv          # Output of cleaning (reference)
+├── excluded_records.csv      # Rejected rows (reference)
+├── train.csv                 # Raw sample data (reference)
+├── SYSTEM ARCHITECTURE DIAGRAM.jpg
+└── README.md
 ```
+
+---
+
+## Prerequisites
+- Python 3.10+ on Windows (PowerShell)
+- Recommended: use the provided virtual environment `venv\` or create your own
+
+---
+
+## Quick Start (Windows PowerShell)
+
+### 1) Activate virtual environment and install deps
+If you want to use the provided env:
+```
+./venv/Scripts/Activate.ps1
+```
+Otherwise, create a new one and install:
+```
+python -m venv venv
+./venv/Scripts/Activate.ps1
+pip install -r backend/requirements.txt
+```
+
+### 2) Start the backend API (port 5000)
+```
+python backend/app.py
+```
+You should see the server running on `http://localhost:5000`.
+
+Health checks:
+- `GET http://localhost:5000/api/test` → simple OK
+- `GET http://localhost:5000/` → API welcome message
+
+### 3) Serve the frontend (port 8000)
+Do not open `index.html` directly from the filesystem; use a local server so browser requests work reliably.
+```
+python -m http.server -d frontend 8000
+```
+Then open `http://localhost:8000` in your browser.
+
+Notes:
+- The frontend expects the API at `http://localhost:5000` (see `frontend/scripts.js`). If you change the API port, update `API_BASE_URL` accordingly.
+- The database is read from `database/data.db` via the backend (configured in `backend/app.py`).
+
 ---
 
 ## How It Works
-1. **Frontend** fetches trip data from backend endpoints.
-2. **Filters** can be applied to refine trips by date, distance, and passenger count.
-3. **Charts** are dynamically generated using Chart.js based on filtered data.
-4. **Insights** are calculated and displayed in real-time.
-5. **Database** stores cleaned and structured trip data with proper relationships between trips and locations
+1. The frontend calls the API endpoints to fetch trips, a trips-per-hour summary, and insights.
+2. The backend executes optimized queries (with sampling where helpful) against `database/data.db`.
+3. The UI renders a chart, insights, and a paginated table. Filters (date, min distance) are applied server-side.
 
 ---
 
-## Database Schema
-
-### locations
-- `location_id` (INTEGER, PRIMARY KEY)
-- `latitude` (REAL, NOT NULL)
-- `longitude` (REAL, NOT NULL)
-
-### trips
-- `trip_id` (INTEGER, PRIMARY KEY)
-- `pickup_datetime` (TEXT, NOT NULL)
-- `dropoff_datetime` (TEXT, NOT NULL)
-- `trip_duration_s` (REAL)
-- `trip_distance_km` (REAL)
-- `trip_speed_kmph` (REAL)
-- `pickup_location_id` (INTEGER, FOREIGN KEY → locations.location_id)
-- `dropoff_location_id` (INTEGER, FOREIGN KEY → locations.location_id)
+## API Endpoints
+- `GET /` → API welcome message
+- `GET /api/test` → Health check
+- `GET /api/trips?page=<n>&per_page=<k>&date=YYYY-MM-DD&min_distance=<m>` → Paginated trips
+- `GET /api/summary` → Trips-per-hour summary (sampled)
+- `GET /api/insights` → Top insights (busiest hours, slowest hours, longest trips)
+- `GET /api/stats` → Aggregate stats (totals/averages)
+- `GET /api/debug` → DB table counts and DB size
 
 ---
 
-## Data Cleaning
-- Excludes trips with:
-  - Invalid timestamps or negative durations
-  - Missing or invalid coordinates
-  - Duplicate entries
-  - Unrealistic speeds (>200 km/h)
-- Computes trip distance using Haversine formula.
-- Produces separate files for cleaned trips and excluded trips.
+## Configuration
+- API host/port: change in how you run Flask (default is `localhost:5000`).
+- Frontend API target: update `API_BASE_URL` in `frontend/scripts.js` if the backend host/port changes.
+- Database location: `database/data.db` (resolved relative to `backend/app.py`).
 
 ---
 
-## Demo Data Insertion
-- `data_insertion.py` inserts sample trips into the database for testing.
-- Example inserted fields:
-  - Passenger count
-  - Pickup and dropoff locations
-  - Trip datetime, distance, duration, and speed
-
----
-## Installation steps
-- Clone the repository:
-  - git clone https://github.com/Divine-kuzo/urban-mobility-data-explorer
-  - cd urban-mobility-data-explorer
-
-- Install Python (3.10 or higher) from python.org
-- Install required Python packages:
-  - pip install -r requirements.txt
-- Ensure database file is in place (database/dump.db) or run the data insertion script to populate it.
-- Make sure Chart.js is available via CDN in the frontend HTML.
-
----
-## Environment setup
-- set Up Python Environment
-  - Create a virtual environment (recommended):
-     python -m venv venv
-- Activate the virtual environment:
-# Linux/macOS
-source venv/bin/activate
-# Windows
-venv\Scripts\activate
-  - Install Python dependencies:
-     pip install -r requirements.txt
-- Prepare the Database
-  - Ensure SQLite database file exists at database/dump.db.
-  - Populate demo data (optional but recommended):
-     python database/insert_data.py
-- Set Up Frontend
-  - Frontend files are in the project root (index.html, style.css, app.js).
-  - To serve the frontend locally, run:
-     python -m http.server 8000
-  - Open your browser at http://localhost:8000.
-- No Additional Environment Variables Required
-All configurations and paths are already set relative to the project structure.
-
----
-### Launching the Application
-## 1. Launch Backend (Flask API)
-- Ensure your virtual environment is activated.
-- Navigate to the backend folder (if applicable).
-- Run the Flask app:
-# For main backend app
-  python app.py
-- By default, the backend runs on:
-  http://127.0.0.1:5000 (or the port specified in the code).
-- API Endpoints available:
-  / → Home route, basic status check
-  /top_dropoffs → Top dropoff locations
-  Additional endpoints from main.py as defined
-## 2. Launch Frontend
-- Ensure the backend is running.
-- Serve the frontend using a local server:
-  python -m http.server 8000
-- Open your browser at:
-  http://localhost:8000
-- The frontend connects to the backend to fetch trip data and display charts, tables, and insights.
-## 3. Verify Application
-- Open the frontend URL in a browser.
-- Apply filters using the sidebar to see live updates of charts, tables, and analytics.
-- Confirm backend API returns JSON data without errors.
+## Troubleshooting
+- Backend fails with “Database file not found”: confirm `database/data.db` exists and that `backend/app.py` can resolve `../database/data.db` on your machine.
+- Frontend shows CORS/network errors: ensure the backend is running on port 5000 and that you’re serving the frontend via `http://localhost:8000` (not `file://`).
+- Empty tables/charts: verify the DB has data via `GET /api/debug` and `GET /api/stats`.
 
 ---
 
-## Notes
-- Frontend uses Chart.js for dynamic charting.
-- SQLite database ensures data integrity through relational constraints and indexes.
+## Tech Stack
+- Frontend: HTML, CSS, JavaScript, Chart.js
+- Backend: Python, Flask, Flask-CORS, SQLite
 
 ---
-### Documentation / Report 
----
-### Video Demonstration
-This video demonstrates our NYC Taxi Mobility Dashboard, where we walk through the functionality of the application, including how to filter trips, interpret the interactive charts, and explore key insights derived from the taxi trip data. It provides an overview of how the frontend, backend, and database work together to deliver data analysis experience. 
-link: https://youtu.be/dUS9UysvnBc 
+
+## Demo Video
+[Replace this with the final demo video link and a short description.](#)

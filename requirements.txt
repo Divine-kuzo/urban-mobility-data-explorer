@@ -1,7 +1,0 @@
-pandas
-sqlalchemy
-flask
-flask-sqlalchemy
-pyarrow
-python-dotenv
-
