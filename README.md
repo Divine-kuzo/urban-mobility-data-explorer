@@ -1,6 +1,6 @@
 ### Urban Mobility Data Explorer (NYC Taxi)
 
-[[Demo video – https://www.youtube.com/watch?v=EkILz0te4W4](#)
+[Demo video – https://www.youtube.com/watch?v=EkILz0te4W4](#)
 
 ## Overview
 The Urban Mobility Data Explorer is a web app to visualize and analyze NYC taxi trips. It combines a static frontend (HTML/CSS/JS with Chart.js) and a Flask + SQLite backend API. Users can filter trips, view charts and insights, and browse a paginated table of trips.
