@@ -68,13 +68,13 @@ pip install -r backend/requirements.txt
 pip install flask
 pip install flask
 ```
-### 2)Since train.csv, cleaned_data.csv, and the database(data_db) were too large to be pushed on github, they were left in the codebase. 
+### 2)Since train.csv, cleaned_data.csv, and the database(data_db) were too large to be pushed on github, they were left in the codebase (gitignore). 
 ```
 Download train.csv from kaggle
 [https://www.kaggle.com/competitions/nyc-taxi-trip-duration/data?select=train.zip]
 place it in the root of the repo
 run python data_processing.py
-to get cleaned_data.csv, excluded_data.csv and populate the cleaned data inn database(data_db)
+to get cleaned_data.csv, excluded_data.csv and populate the cleaned data in database(data_db)
 ```
 
 ### 3) Start the backend API (port 5000)
