@@ -1,6 +1,6 @@
 ### Urban Mobility Data Explorer (NYC Taxi)
 
-[Demo video – https://www.youtube.com/watch?v=EkILz0te4W4](#)
+Demo video – https://www.youtube.com/watch?v=EkILz0te4W4
 
 ## Overview
 The Urban Mobility Data Explorer is a web app to visualize and analyze NYC taxi trips. It combines a static frontend (HTML/CSS/JS with Chart.js) and a Flask + SQLite backend API. Users can filter trips, view charts and insights, and browse a paginated table of trips.
@@ -65,9 +65,16 @@ Otherwise, create a new one and install:
 python -m venv venv
 ./venv/Scripts/Activate.ps1
 pip install -r backend/requirements.txt
+pip install flask
+pip install flask
+```
+### 2)Since train.csv, cleaned_data.csv, and the database(data_db) were too large to be pushed on github, they were left in the codebase. 
+```
+Download train.csv from kaggle: https://www.kaggle.com/competitions/nyc-taxi-trip-duration/data?select=train.zip and place it in the root of the repo
+run python data_processing.py to get cleaned_data.csv, excluded_data.csv and populate the cleaned data inn database(data_db)
 ```
 
-### 2) Start the backend API (port 5000)
+### 3) Start the backend API (port 5000)
 ```
 python backend/app.py
 ```
@@ -77,18 +84,8 @@ Health checks:
 - `GET http://localhost:5000/api/test` → simple OK
 - `GET http://localhost:5000/` → API welcome message
 
-### 3) Serve the frontend (port 8000)
-Do not open `index.html` directly from the filesystem; use a local server so browser requests work reliably.
-```
-python -m http.server -d frontend 8000
-```
-Then open `http://localhost:8000` in your browser.
-
-Notes:
-- The frontend expects the API at `http://localhost:5000` (see `frontend/scripts.js`). If you change the API port, update `API_BASE_URL` accordingly.
-- The database is read from `database/data.db` via the backend (configured in `backend/app.py`).
-
----
+### 4) Open the index.html file with live server in VScode
+LOADING THE DATA MAY TAKE UP TO 5-10 MIMUTES, WAIT PATIENTLY.
 
 ## How It Works
 1. The frontend calls the API endpoints to fetch trips, a trips-per-hour summary, and insights.
@@ -129,4 +126,4 @@ Notes:
 ---
 
 ## Demo Video
-[Demo video placeholder – https://www.youtube.com/watch?v=EkILz0te4W4](#)
+Demo video placeholder– https://www.youtube.com/watch?v=EkILz0te4W4
